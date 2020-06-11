@@ -1,7 +1,6 @@
 package rest;
 
 import com.google.gson.Gson;
-import dtos.TagDTO;
 import dtos.ChuckDTO;
 import dtos.CombinedJoke;
 import dtos.DadDTO;
