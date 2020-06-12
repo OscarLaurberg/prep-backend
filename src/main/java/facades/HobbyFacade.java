@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import org.jsoup.nodes.Entities;
 
 /**
  *
@@ -43,6 +44,64 @@ public class HobbyFacade {
             entityManager.close();
         }
     }
+    
+    public HobbyDTO createHobby(HobbyDTO hobbyDTO){
+       EntityManager entityManager = emf.createEntityManager();
+       Hobby hobby = new Hobby(hobbyDTO);
+       try{
+           entityManager.getTransaction().begin();
+           entityManager.persist(hobby);
+           entityManager.getTransaction().commit();
+       } catch (Exception e){
+           throw new IllegalArgumentException("Hobby not created");
+       }finally{
+           entityManager.close();
+       }
+       return new HobbyDTO(hobby);
+    }
+    
+    public HobbyDTO updateHobby(HobbyDTO hobbyDTO){
+        EntityManager entityManager = emf.createEntityManager();
+        try{
+            Hobby hobby = entityManager.find(Hobby.class, hobbyDTO.getId());
+            if (hobby == null){
+                throw new IllegalArgumentException();
+            }else{
+                entityManager.getTransaction().begin();
+                hobby.setDescription(hobbyDTO.getDescription());
+                hobby.setName(hobbyDTO.getName());
+                entityManager.merge(hobby);
+                entityManager.getTransaction().commit();
+                return hobbyDTO;
+                       
+            }
+        }catch(IllegalArgumentException e){
+            throw new IllegalArgumentException("Hobby not updated");
+        }finally{
+            entityManager.close();
+        }        
+    }
+    
+    public HobbyDTO deleteHobby(long id){
+        EntityManager entityManager = emf.createEntityManager();
+        try{
+            Hobby hobby = entityManager.find(Hobby.class,id);
+            if(hobby == null){
+                throw new IllegalArgumentException();
+            }else{
+                entityManager.getTransaction().begin();
+                entityManager.remove(hobby);
+                entityManager.getTransaction().commit();
+            }
+            return new HobbyDTO(hobby);
+        }finally{
+            entityManager.close();
+        }
+            
+    
+    }
+    
+    
 
     private List<HobbyDTO> toHobbyDTOList(List<Hobby> hobbies) {
         List<HobbyDTO> dtos = new ArrayList<>();

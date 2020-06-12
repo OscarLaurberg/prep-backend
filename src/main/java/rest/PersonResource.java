@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -52,6 +53,7 @@ public class PersonResource {
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The Requested person information"),
                 @ApiResponse(responseCode = "404", description = "No person found with that id")})
+    @RolesAllowed({"admin","user"})
     @Path("/id/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})

@@ -28,7 +28,7 @@ public class HobbyDTO {
         
     }
     
-    public HobbyDTO (Long id, String name, String description){
+    public HobbyDTO (String name, String description){
         this.id=id;
         this.name=name;
         this.description=description;

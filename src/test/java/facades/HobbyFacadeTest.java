@@ -68,4 +68,43 @@ public class HobbyFacadeTest {
         int result = hobbies.size();
         assertEquals(expected,result);
         }
+        
+        @Test
+        public void testCreateHobby(){
+            int expected = hobbyFacade.getAll().size()+1;            
+            Hobby hobby = new Hobby("Swimming","It's tough");
+            HobbyDTO hobbyDTO = new HobbyDTO(hobby);
+            hobbyFacade.createHobby(hobbyDTO);
+            int result = hobbyFacade.getAll().size();
+            assertEquals(expected, result);
+        }
+        
+        @Test
+        public void testCreateHobbyAgain(){
+        String expected = "Swimming";           
+            Hobby hobby = new Hobby(expected,"It's tough");
+            HobbyDTO hobbyDTO = new HobbyDTO(hobby);
+            hobbyFacade.createHobby(hobbyDTO);
+            String result = hobbyFacade.getAll().get(2).getName();
+            assertEquals(expected, result);
+        }
+        
+        @Test
+        public void testUpdateHobbyDescription(){
+            String expected = "My hand is a dolphin";
+            HobbyDTO hobbyDTO = hobbyFacade.getAll().get(0);
+            hobbyDTO.setDescription(expected);
+            hobbyFacade.updateHobby(hobbyDTO);
+            String result = hobbyFacade.getAll().get(0).getDescription();
+            assertEquals(expected, result);
+        }
+        
+        @Test
+        public void testDeleteHobby(){
+            int expected = hobbyFacade.getAll().size()-1;
+            hobbyFacade.deleteHobby(h1.getId());
+            int result = hobbyFacade.getAll().size();
+            assertEquals(expected, result);
+            
+        }
 }
